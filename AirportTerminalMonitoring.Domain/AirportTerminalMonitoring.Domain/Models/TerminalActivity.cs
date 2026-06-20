@@ -5,6 +5,7 @@ namespace AirportTerminalMonitoring.Domain.Models
 {
     public class TerminalActivity
     {
+        public Guid Id { get; set; }
         public Guid TerminalId { get; set; }
         public DateTime CollectionTime { get; set; }
         public int PassengerCount { get; set; }
