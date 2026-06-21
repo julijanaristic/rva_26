@@ -13,4 +13,8 @@
     <ProjectReference Include="..\AirportTerminalMonitoring.Services\AirportTerminalMonitoring.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.5" />
+  </ItemGroup>
+
 </Project>

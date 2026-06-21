@@ -51,7 +51,6 @@
     <Compile Include="Repositories\TerminalRepository.cs" />
     <Compile Include="Simulation\TerminalStateSimulationService.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\AirportTerminalMonitoring.Domain\AirportTerminalMonitoring.Domain.csproj">
       <Project>{f9b06820-13ec-4209-a0b5-526da13d7826}</Project>

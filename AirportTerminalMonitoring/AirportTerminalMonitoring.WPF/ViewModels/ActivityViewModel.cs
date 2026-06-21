@@ -1,9 +1,15 @@
-﻿using AirportTerminalMonitoring.Domain.Models;
+﻿using AirportTerminalMonitoring.Domain.Enums;
+using AirportTerminalMonitoring.Domain.Models;
 using AirportTerminalMonitoring.Services.Interfaces;
+using AirportTerminalMonitoring.Services.Simulation;
 using AirportTerminalMonitoring.WPF.Commands;
 using AirportTerminalMonitoring.WPF.Views;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace AirportTerminalMonitoring.WPF.ViewModels
 {
@@ -13,6 +19,9 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
         private readonly ILoggerService _logger;
         private readonly IDataStorageService _storageService;
         private readonly IRepository<AirportTerminal> _terminalRepository;
+
+        private readonly DispatcherTimer _timer;
+        private readonly TerminalStateSimulationService _simulationService;
 
         private ObservableCollection<TerminalActivity> _activities;
 
@@ -53,6 +62,36 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
         public ICommand EditCommand { get; }
         public ICommand SearchCommand { get; }
 
+        private ISeries[] _series;
+        public ISeries[] Series
+        {
+            get => _series;
+            set
+            {
+                _series = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private IEnumerable<Axis> _xAxes;
+        public IEnumerable<Axis> XAxes
+        {
+            get => _xAxes;
+            set
+            {
+                _xAxes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string[] Labels => new[]
+        {
+            "Operational",
+            "Congested",
+            "Delayed",
+            "Closed"
+        };
+
         public ActivityViewModel(IRepository<TerminalActivity> repository, ILoggerService logger, IDataStorageService storageService, IRepository<AirportTerminal> terminalRepository)
         {
             _repository = repository;
@@ -64,6 +103,11 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             DeleteCommand = new RelayCommand(_ => DeleteActivity());
             EditCommand = new RelayCommand(_ => EditActivity());
             SearchCommand = new RelayCommand(_ => SearchActivity());
+            _simulationService = new TerminalStateSimulationService();
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(3);
+            _timer.Tick += Timer_Tick;
+            _timer.Start(); 
         }
 
         private void AddActivity()
@@ -133,6 +177,44 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             );
 
             Activities = new ObservableCollection<TerminalActivity>(filtered);
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            foreach (var a in Activities)
+            {
+                a.State = _simulationService.GetNextState(a.State);
+            }
+            OnPropertyChanged(nameof(Activities));
+
+            UpdateChart();
+        }
+
+        private void UpdateChart()
+        {
+            int operational = Activities.Count(a => a.State == TerminalState.Operational);
+            int congested = Activities.Count(a => a.State == TerminalState.Congested);
+            int delayed = Activities.Count(a => a.State == TerminalState.Delayed);
+            int closed = Activities.Count(a => a.State == TerminalState.Closed);
+
+            Series = new ISeries[]
+            {
+                new ColumnSeries<int>
+                {
+                    Values = new int[]
+                    {
+                        operational, congested, delayed, closed
+                    }
+                }
+            };
+
+            XAxes = new List<Axis>
+            {
+                new Axis
+                {
+                    Labels = Labels
+                }
+            };
         }
     }
 }

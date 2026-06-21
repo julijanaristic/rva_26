@@ -24,12 +24,7 @@
             <ComboBox ItemsSource="{Binding Terminals, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedItem="{Binding SelectedTerminal}" DisplayMemberPath="Code"/>
 
             <TextBlock Text="State"/>
-            <ComboBox ItemsSource="{Binding States}" SelectedItem="{Binding State}">
-                <ComboBoxItem Content="Operational"/>
-                <ComboBoxItem Content="Congested"/>
-                <ComboBoxItem Content="Delayed"/>
-                <ComboBoxItem Content="Closed"/>
-            </ComboBox>
+            <ComboBox ItemsSource="{Binding States}" SelectedItem="{Binding State}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Width="80" Margin="5" Content="Save" Command="{Binding SaveCommand}"/>

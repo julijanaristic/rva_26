@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AirportTerminalMonitoring.WPF.Views"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"        
         mc:Ignorable="d"
         Title="ActivityWindow" Height="450" Width="800">
     <DockPanel Margin="10">
@@ -24,5 +25,7 @@
                 <DataGridTextColumn Header="State" Binding="{Binding State}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <lvc:CartesianChart Series="{Binding Series}" XAxes="{Binding XAxes}"/>
     </DockPanel>
 </Window>
