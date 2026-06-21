@@ -9,8 +9,8 @@ namespace AirportTerminalMonitoring.Services.Persistence
 {
     public class XmlStorageService : IDataStorageService
     {
-        private const string TERMINALS_FILE = "terminals.json";
-        private const string ACTIVITIES_FILE = "activities.json";
+        private const string TERMINALS_FILE = "terminals.xml";
+        private const string ACTIVITIES_FILE = "activities.xml";
 
         public List<AirportTerminal> LoadTerminals()
         {

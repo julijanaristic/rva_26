@@ -1,0 +1,40 @@
+﻿<Window x:Class="AirportTerminalMonitoring.WPF.Views.ActivityFormWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AirportTerminalMonitoring.WPF.Views"
+        mc:Ignorable="d"
+        Title="ActivityFormWindow" Height="400" Width="450">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="Collection Time"/>
+            <DatePicker SelectedDate="{Binding CollectionTime}"/>
+
+            <TextBlock Text="Passenger Count"/>
+            <TextBox Text="{Binding PassengerCount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <TextBlock Text="Average Wait Time"/>
+            <TextBox Text="{Binding AverageWaitTime, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <TextBlock Text="Number of Delays"/>
+            <TextBox Text="{Binding NumberOfDelays, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <TextBlock Text="Terminal"/>
+            <ComboBox ItemsSource="{Binding Terminals, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedItem="{Binding SelectedTerminal}" DisplayMemberPath="Code"/>
+
+            <TextBlock Text="State"/>
+            <ComboBox ItemsSource="{Binding States}" SelectedItem="{Binding State}">
+                <ComboBoxItem Content="Operational"/>
+                <ComboBoxItem Content="Congested"/>
+                <ComboBoxItem Content="Delayed"/>
+                <ComboBoxItem Content="Closed"/>
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="80" Margin="5" Content="Save" Command="{Binding SaveCommand}"/>
+                <Button Width="80" Margin="5" Content="Cancel" Command="{Binding CancelCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
