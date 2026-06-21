@@ -57,10 +57,15 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             }
         }
 
+        private readonly Stack<IUndoRedoCommand> _undoStack = new();
+        private readonly Stack<IUndoRedoCommand> _redoStack = new();
+
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand SearchCommand { get; }
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
 
         private ISeries[] _series;
         public ISeries[] Series
@@ -103,6 +108,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             DeleteCommand = new RelayCommand(_ => DeleteActivity());
             EditCommand = new RelayCommand(_ => EditActivity());
             SearchCommand = new RelayCommand(_ => SearchActivity());
+            UndoCommand = new RelayCommand(_ => Undo(), _ => _undoStack.Count > 0);
+            RedoCommand = new RelayCommand(_ => Redo(), _ => _redoStack.Count > 0);
             _simulationService = new TerminalStateSimulationService();
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(3);
@@ -116,8 +123,12 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
 
             form.SaveRequested += activity =>
             {
-                _repository.Add(activity);
-                Activities.Add(activity);
+                var cmd = new GenericAddCommand<TerminalActivity>(Activities, _repository, activity);
+                cmd.Execute();
+
+                _undoStack.Push(cmd);
+                _redoStack.Clear();
+
                 _storageService.SaveActivities(Activities);
                 _logger.Log($"Added activity {activity.Id}");
             };
@@ -130,10 +141,14 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             if (SelectedActivity == null)
                 return;
 
-            _repository.Delete(SelectedActivity.Id);
-            Activities.Remove(SelectedActivity);
+            var cmd = new GenericDeleteCommand<TerminalActivity>(Activities, _repository, SelectedActivity);
+            _logger.Log($"Deleted activity: {SelectedActivity.Id}");
+
+            cmd.Execute();
+            _undoStack.Push(cmd);
+            _redoStack.Clear();
+
             _storageService.SaveActivities(Activities);
-            _logger.Log($"Deleted activity {SelectedActivity.Id}");
         }
 
         private void EditActivity()
@@ -141,13 +156,27 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             if (SelectedActivity == null)
                 return;
 
+            var oldState = new TerminalActivity
+            {
+                Id = SelectedActivity.Id,
+                TerminalId = SelectedActivity.TerminalId,
+                CollectionTime = SelectedActivity.CollectionTime,
+                PassengerCount = SelectedActivity.PassengerCount,
+                AverageWaitTime = SelectedActivity.AverageWaitTime,
+                NumberOfDelays = SelectedActivity.NumberOfDelays,
+                State = SelectedActivity.State
+            };
+
             ActivityFormViewModel form = new ActivityFormViewModel(SelectedActivity, _terminalRepository.GetAll());
 
             form.SaveRequested += activity =>
             {
-                _repository.Update(activity);
-                int index = Activities.IndexOf(SelectedActivity);
-                Activities[index] = activity;
+                var cmd = new GenericEditCommand<TerminalActivity>(Activities, _repository, oldState, activity, SelectedActivity);
+                cmd.Execute();
+
+                _undoStack.Push(cmd);
+                _redoStack.Clear();
+
                 SelectedActivity = activity;
                 _storageService.SaveActivities(Activities);
                 _logger.Log($"Updated activity {activity.Id}");
@@ -215,6 +244,28 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
                     Labels = Labels
                 }
             };
+        }
+
+        private void Undo()
+        {
+            if (_undoStack.Count == 0)
+                return;
+            var command = _undoStack.Pop();
+            command.Undo();
+            _redoStack.Push(command);
+            _storageService.SaveActivities(Activities);
+            _logger.Log("Undo executed");
+        }
+
+        private void Redo()
+        {
+            if (_redoStack.Count == 0)
+                return;
+            var command = _redoStack.Pop();
+            command.Execute();
+            _undoStack.Push(command);
+            _storageService.SaveActivities(Activities);
+            _logger.Log("Redo executed");
         }
     }
 }

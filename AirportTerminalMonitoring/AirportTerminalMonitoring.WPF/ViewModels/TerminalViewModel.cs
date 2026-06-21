@@ -55,10 +55,15 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
 
         }
 
+        private readonly Stack<IUndoRedoCommand> _undoStack = new();
+        private readonly Stack<IUndoRedoCommand> _redoStack = new();
+
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand SearchCommand { get; }
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
 
         public TerminalViewModel(IRepository<AirportTerminal> repository, ILoggerService logger, IDataStorageService storage)
         {
@@ -70,6 +75,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             DeleteCommand = new RelayCommand(_ => DeleteTerminal());
             EditCommand = new RelayCommand(_ => EditTerminal());
             SearchCommand = new RelayCommand(_ => SearchTerminals());
+            UndoCommand = new RelayCommand(_ => Redo(), _ => _undoStack.Count > 0);
+            RedoCommand = new RelayCommand(_ => Undo(), _ => _redoStack.Count > 0);
         }
 
         private void AddTerminal()
@@ -77,8 +84,12 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             TerminalFormViewModel form = new TerminalFormViewModel();
             form.SaveRequested += terminal =>
             {
-                _repository.Add(terminal);
-                Terminals.Add(terminal);
+                var cmd = new GenericAddCommand<AirportTerminal>(Terminals, _repository, terminal);
+                cmd.Execute();
+
+                _undoStack.Push(cmd);
+                _redoStack.Clear();
+
                 _storage.SaveTerminals(Terminals);
                 _logger.Log($"Added terminal {terminal.Code}");
             };
@@ -91,10 +102,14 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             if (SelectedTerminal == null)
                 return;
 
-            _repository.Delete(SelectedTerminal.Id);
-            Terminals.Remove(SelectedTerminal);
-            _storage.SaveTerminals(Terminals);
+            var cmd = new GenericDeleteCommand<AirportTerminal>(Terminals, _repository, SelectedTerminal);
             _logger.Log($"Deleted terminal {SelectedTerminal.Code}");
+
+            cmd.Execute();
+            _undoStack.Push(cmd);
+            _redoStack.Clear();
+
+            _storage.SaveTerminals(Terminals);
         }
 
         private void EditTerminal()
@@ -102,17 +117,29 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             if (SelectedTerminal == null)
                 return;
 
+            var oldState = new AirportTerminal
+            {
+                Id = SelectedTerminal.Id,
+                Code = SelectedTerminal.Code,
+                AirportName = SelectedTerminal.AirportName,
+                GateCount = SelectedTerminal.GateCount,
+                DirectExit = SelectedTerminal.DirectExit
+            };
+
             TerminalFormViewModel form = new TerminalFormViewModel(SelectedTerminal);
 
             form.SaveRequested += terminal =>
             {
-                _repository.Update(terminal);
-                int index = Terminals.IndexOf(SelectedTerminal);
-                Terminals[index] = terminal;
+                var cmd = new GenericEditCommand<AirportTerminal>(Terminals, _repository, oldState, terminal, SelectedTerminal);
+                cmd.Execute();
+
+                _undoStack.Push(cmd);
+                _redoStack.Clear();
+
                 SelectedTerminal = terminal;
                 _storage.SaveTerminals(Terminals);
                 _logger.Log($"Updated terminal {terminal.Code}");
-            };
+            }; 
 
             TerminalFormWindow window = new TerminalFormWindow(form);
             window.ShowDialog();
@@ -138,6 +165,29 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             );
 
             Terminals = new ObservableCollection<AirportTerminal>(filtered);
+        }
+
+        private void Undo()
+        {
+            if (_undoStack.Count == 0)
+                return;
+            var command = _undoStack.Pop();
+            command.Undo();
+            _redoStack.Push(command);
+            _storage.SaveTerminals(Terminals);
+            _logger.Log("Undo executed.");
+        }
+
+        private void Redo()
+        {
+            if (_redoStack.Count == 0)
+                return;
+
+            var command = _redoStack.Pop();
+            command.Execute();
+            _undoStack.Push(command);
+            _storage.SaveTerminals(Terminals);
+            _logger.Log("Redo executed.");
         }
     }
 }

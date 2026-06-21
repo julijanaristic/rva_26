@@ -14,6 +14,8 @@
             <Button Content="Add" Margin="5" Command="{Binding AddCommand}"/>
             <Button Content="Edit" Margin="5" Command="{Binding EditCommand}"/>
             <Button Content="Delete" Margin="5" Command="{Binding DeleteCommand}"/>
+            <Button Content="Undo" Margin="5" Command="{Binding UndoCommand}"/>
+            <Button Content="Redo" Margin="5" Command="{Binding RedoCommand}"/>
         </StackPanel>
 
         <DataGrid ItemsSource="{Binding Activities}" SelectedItem="{Binding SelectedActivity}" AutoGenerateColumns="False">
