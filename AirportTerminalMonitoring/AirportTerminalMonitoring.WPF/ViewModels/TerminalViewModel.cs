@@ -1,5 +1,6 @@
 ﻿using AirportTerminalMonitoring.Domain.Models;
 using AirportTerminalMonitoring.Services.Interfaces;
+using AirportTerminalMonitoring.WCF;
 using AirportTerminalMonitoring.WPF.Commands;
 using AirportTerminalMonitoring.WPF.Views;
 using System;
@@ -55,8 +56,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
 
         }
 
-        private readonly Stack<IUndoRedoCommand> _undoStack = new();
-        private readonly Stack<IUndoRedoCommand> _redoStack = new();
+        private readonly Stack<IUndoRedoCommand> _undoStack = new Stack<IUndoRedoCommand>();
+        private readonly Stack<IUndoRedoCommand> _redoStack = new Stack<IUndoRedoCommand>();
 
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
@@ -71,6 +72,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _logger = logger;
             _storage = storage;
             Terminals = new ObservableCollection<AirportTerminal>(_repository.GetAll());
+            TerminalService.Terminals = Terminals.ToList();
             AddCommand = new RelayCommand(_ => AddTerminal());
             DeleteCommand = new RelayCommand(_ => DeleteTerminal());
             EditCommand = new RelayCommand(_ => EditTerminal());
@@ -92,6 +94,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
 
                 _storage.SaveTerminals(Terminals);
                 _logger.Log($"Added terminal {terminal.Code}");
+                TerminalService.Terminals = Terminals.ToList();
             };
             TerminalFormWindow window = new TerminalFormWindow(form);
             window.ShowDialog();
@@ -110,6 +113,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _redoStack.Clear();
 
             _storage.SaveTerminals(Terminals);
+            TerminalService.Terminals = Terminals.ToList();
         }
 
         private void EditTerminal()
@@ -139,6 +143,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
                 SelectedTerminal = terminal;
                 _storage.SaveTerminals(Terminals);
                 _logger.Log($"Updated terminal {terminal.Code}");
+                TerminalService.Terminals = Terminals.ToList();
             }; 
 
             TerminalFormWindow window = new TerminalFormWindow(form);
@@ -165,6 +170,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             );
 
             Terminals = new ObservableCollection<AirportTerminal>(filtered);
+            TerminalService.Terminals = Terminals.ToList();
         }
 
         private void Undo()
@@ -176,6 +182,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _redoStack.Push(command);
             _storage.SaveTerminals(Terminals);
             _logger.Log("Undo executed.");
+            TerminalService.Terminals = Terminals.ToList();
         }
 
         private void Redo()
@@ -188,6 +195,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _undoStack.Push(command);
             _storage.SaveTerminals(Terminals);
             _logger.Log("Redo executed.");
+            TerminalService.Terminals = Terminals.ToList();
         }
     }
 }

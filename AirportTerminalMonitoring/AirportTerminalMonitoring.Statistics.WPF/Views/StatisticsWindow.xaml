@@ -1,0 +1,88 @@
+﻿<Window
+    x:Class="AirportTerminalMonitoring.Statistics.WPF.Views.StatisticsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Statistics - Airport Terminal Monitoring"
+    Width="900"
+    Height="600">
+    <DockPanel Margin="10">
+
+        <!--  Toolbar sa datumima  -->
+        <StackPanel
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="5"
+                VerticalAlignment="Center"
+                Text="From:" />
+            <DatePicker
+                Width="120"
+                Margin="5"
+                SelectedDate="{Binding FromDate}" />
+            <TextBlock
+                Margin="5"
+                VerticalAlignment="Center"
+                Text="To:" />
+            <DatePicker
+                Width="120"
+                Margin="5"
+                SelectedDate="{Binding ToDate}" />
+            <Button
+                Margin="5"
+                Command="{Binding LoadDataCommand}"
+                Content="Load Data" />
+        </StackPanel>
+
+        <!--  Status poruka  -->
+        <TextBlock
+            Margin="5,0,0,5"
+            DockPanel.Dock="Top"
+            Foreground="Gray"
+            Text="{Binding StatusMessage}" />
+
+        <!--  Prikaz primljenih podataka  -->
+        <GroupBox
+            Height="200"
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            Header="Received Data">
+            <ListBox FontFamily="Consolas" ItemsSource="{Binding DisplayLines}" />
+        </GroupBox>
+
+        <!--  Statisticke opcije  -->
+        <StackPanel
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="5"
+                VerticalAlignment="Center"
+                Text="Method:" />
+            <ComboBox
+                Width="200"
+                Margin="5"
+                ItemsSource="{Binding Methods}"
+                SelectedItem="{Binding SelectedMethod}" />
+            <Button
+                Margin="5"
+                Command="{Binding ComputeCommand}"
+                Content="Compute" />
+            <Button
+                Margin="5"
+                Command="{Binding ExportCsvCommand}"
+                Content="Export CSV" />
+        </StackPanel>
+
+        <!--  Rezultati  -->
+        <GroupBox Header="Statistics Result">
+            <TextBox
+                FontFamily="Consolas"
+                IsReadOnly="True"
+                Text="{Binding StatisticsResult}"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto" />
+        </GroupBox>
+
+    </DockPanel>
+</Window>

@@ -1,5 +1,6 @@
 ﻿using AirportTerminalMonitoring.Domain.Models;
 using AirportTerminalMonitoring.WPF.Commands;
+using System;
 using System.ComponentModel;
 using System.Windows.Input;
 

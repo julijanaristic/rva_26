@@ -7,7 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportTerminalMonitoring.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportTerminalMonitoring.Services", "AirportTerminalMonitoring.Services\AirportTerminalMonitoring.Services.csproj", "{579CC571-1D44-49C2-B364-A2D951D4ABC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportTerminalMonitoring.WPF", "AirportTerminalMonitoring.WPF\AirportTerminalMonitoring.WPF.csproj", "{370FF73D-DD2B-4FB3-8A16-DB65E2C9F660}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportTerminalMonitoring.WCF", "AirportTerminalMonitoring.WCF\AirportTerminalMonitoring.WCF.csproj", "{75ECA28E-D6B6-4037-A36D-0F527FF5B7BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportTerminalMonitoring.Statistics.Services", "AirportTerminalMonitoring.Statistics.Services\AirportTerminalMonitoring.Statistics.Services.csproj", "{96D45A1B-E391-4F49-AEBC-E76FD1CD4C5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportTerminalMonitoring.Statistics.WPF", "AirportTerminalMonitoring.Statistics.WPF\AirportTerminalMonitoring.Statistics.WPF.csproj", "{A772F7C2-886D-4157-A619-E6C347CE0951}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportTerminalMonitoring.WPF", "AirportTerminalMonitoring.WPF\AirportTerminalMonitoring.WPF.csproj", "{E1B3CBAF-9EDF-4EAA-8F9D-9A0072239ACB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +29,22 @@ Global
 		{579CC571-1D44-49C2-B364-A2D951D4ABC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{579CC571-1D44-49C2-B364-A2D951D4ABC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{579CC571-1D44-49C2-B364-A2D951D4ABC8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{370FF73D-DD2B-4FB3-8A16-DB65E2C9F660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{370FF73D-DD2B-4FB3-8A16-DB65E2C9F660}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{370FF73D-DD2B-4FB3-8A16-DB65E2C9F660}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{370FF73D-DD2B-4FB3-8A16-DB65E2C9F660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75ECA28E-D6B6-4037-A36D-0F527FF5B7BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75ECA28E-D6B6-4037-A36D-0F527FF5B7BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75ECA28E-D6B6-4037-A36D-0F527FF5B7BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75ECA28E-D6B6-4037-A36D-0F527FF5B7BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D45A1B-E391-4F49-AEBC-E76FD1CD4C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D45A1B-E391-4F49-AEBC-E76FD1CD4C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D45A1B-E391-4F49-AEBC-E76FD1CD4C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D45A1B-E391-4F49-AEBC-E76FD1CD4C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A772F7C2-886D-4157-A619-E6C347CE0951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A772F7C2-886D-4157-A619-E6C347CE0951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A772F7C2-886D-4157-A619-E6C347CE0951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A772F7C2-886D-4157-A619-E6C347CE0951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1B3CBAF-9EDF-4EAA-8F9D-9A0072239ACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1B3CBAF-9EDF-4EAA-8F9D-9A0072239ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1B3CBAF-9EDF-4EAA-8F9D-9A0072239ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1B3CBAF-9EDF-4EAA-8F9D-9A0072239ACB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

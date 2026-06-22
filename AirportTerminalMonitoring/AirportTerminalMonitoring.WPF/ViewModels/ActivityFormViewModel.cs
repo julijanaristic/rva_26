@@ -1,8 +1,11 @@
 ﻿using AirportTerminalMonitoring.Domain.Enums;
 using AirportTerminalMonitoring.Domain.Models;
 using AirportTerminalMonitoring.WPF.Commands;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace AirportTerminalMonitoring.WPF.ViewModels
@@ -103,7 +106,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
         {
             get;
             set;
-        } = new();
+        } = new ObservableCollection<AirportTerminal>();
 
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }

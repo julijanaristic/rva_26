@@ -2,11 +2,15 @@
 using AirportTerminalMonitoring.Domain.Models;
 using AirportTerminalMonitoring.Services.Interfaces;
 using AirportTerminalMonitoring.Services.Simulation;
+using AirportTerminalMonitoring.WCF;
 using AirportTerminalMonitoring.WPF.Commands;
 using AirportTerminalMonitoring.WPF.Views;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -57,8 +61,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             }
         }
 
-        private readonly Stack<IUndoRedoCommand> _undoStack = new();
-        private readonly Stack<IUndoRedoCommand> _redoStack = new();
+        private readonly Stack<IUndoRedoCommand> _undoStack = new Stack<IUndoRedoCommand>();
+        private readonly Stack<IUndoRedoCommand> _redoStack = new Stack<IUndoRedoCommand>();
 
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
@@ -104,6 +108,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _storageService = storageService;
             _terminalRepository = terminalRepository;
             Activities = new ObservableCollection<TerminalActivity>(_repository.GetAll());
+            TerminalService.Activities = Activities.ToList();
             AddCommand = new RelayCommand(_ => AddActivity());
             DeleteCommand = new RelayCommand(_ => DeleteActivity());
             EditCommand = new RelayCommand(_ => EditActivity());
@@ -114,7 +119,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(3);
             _timer.Tick += Timer_Tick;
-            _timer.Start(); 
+            _timer.Start();
+            UpdateChart();
         }
 
         private void AddActivity()
@@ -131,6 +137,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
 
                 _storageService.SaveActivities(Activities);
                 _logger.Log($"Added activity {activity.Id}");
+                TerminalService.Activities = Activities.ToList();
+                UpdateChart();
             };
             ActivityFormWindow window = new ActivityFormWindow(form);
             window.ShowDialog();
@@ -149,6 +157,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _redoStack.Clear();
 
             _storageService.SaveActivities(Activities);
+            TerminalService.Activities = Activities.ToList();
+            UpdateChart();
         }
 
         private void EditActivity()
@@ -180,6 +190,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
                 SelectedActivity = activity;
                 _storageService.SaveActivities(Activities);
                 _logger.Log($"Updated activity {activity.Id}");
+                TerminalService.Activities = Activities.ToList();
+                UpdateChart();
             };
             ActivityFormWindow window = new ActivityFormWindow(form);
             window.ShowDialog();
@@ -206,6 +218,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             );
 
             Activities = new ObservableCollection<TerminalActivity>(filtered);
+            TerminalService.Activities = Activities.ToList();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -255,6 +268,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _redoStack.Push(command);
             _storageService.SaveActivities(Activities);
             _logger.Log("Undo executed");
+            TerminalService.Activities = Activities.ToList();
+            UpdateChart();
         }
 
         private void Redo()
@@ -266,6 +281,8 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             _undoStack.Push(command);
             _storageService.SaveActivities(Activities);
             _logger.Log("Redo executed");
+            TerminalService.Activities = Activities.ToList();
+            UpdateChart();
         }
     }
 }

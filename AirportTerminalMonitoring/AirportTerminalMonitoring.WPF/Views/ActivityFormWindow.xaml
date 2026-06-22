@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AirportTerminalMonitoring.WPF.Views"
         mc:Ignorable="d"
-        Title="ActivityFormWindow" Height="400" Width="450">
+       Title="ActivityFormWindow" Height="400" Width="450">
     <Grid Margin="20">
         <StackPanel>
             <TextBlock Text="Collection Time"/>
