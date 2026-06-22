@@ -7,53 +7,165 @@
     xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="ActivityWindow"
-    Width="800"
-    Height="450">
-    <DockPanel Margin="10">
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <TextBox
-                Width="200"
-                Margin="5"
-                Text="{Binding SearchText}" />
-            <Button
-                Margin="5"
-                Command="{Binding SearchCommand}"
-                Content="Search" />
-            <Button
-                Margin="5"
-                Command="{Binding AddCommand}"
-                Content="Add" />
-            <Button
-                Margin="5"
-                Command="{Binding EditCommand}"
-                Content="Edit" />
-            <Button
-                Margin="5"
-                Command="{Binding DeleteCommand}"
-                Content="Delete" />
-            <Button
-                Margin="5"
-                Command="{Binding UndoCommand}"
-                Content="Undo" />
-            <Button
-                Margin="5"
-                Command="{Binding RedoCommand}"
-                Content="Redo" />
-        </StackPanel>
+    Width="900"
+    Height="700"
+    WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="#F7F4EF"/>
+        <SolidColorBrush x:Key="CardBrush" Color="White"/>
+        <SolidColorBrush x:Key="BorderBrushCustom" Color="#E5E1DA"/>
+        <SolidColorBrush x:Key="ButtonBrush" Color="#A89F91"/>
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#8F8678"/>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="{StaticResource ButtonBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="18">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter
+                                    TargetName="border"
+                                    Property="Background"
+                                    Value="{StaticResource ButtonHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-        <DataGrid
-            AutoGenerateColumns="False"
-            ItemsSource="{Binding Activities}"
-            SelectedItem="{Binding SelectedActivity}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding PassengerCount}" Header="Passengers" />
-                <DataGridTextColumn Binding="{Binding AverageWaitTime}" Header="Wait Time" />
-                <DataGridTextColumn Binding="{Binding NumberOfDelays}" Header="Delays" />
-                <DataGridTextColumn Binding="{Binding CollectionTime}" Header="Collection Time" />
-                <DataGridTextColumn Binding="{Binding State}" Header="State" />
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <lvc:CartesianChart Series="{Binding Series}" XAxes="{Binding XAxes}" />
-    </DockPanel>
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <DockPanel Margin="20">
+            <Border
+                DockPanel.Dock="Top"
+                Padding="15"
+                Margin="0 0 0 15"
+                Background="{StaticResource CardBrush}"
+                CornerRadius="25"
+                BorderBrush="{StaticResource BorderBrushCustom}"
+                BorderThickness="1">
+                <StackPanel Orientation="Horizontal">
+                    <Border
+                        Width="220"
+                        Height="38"
+                        Margin="5"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                        <TextBox
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="10,7"
+                            Text="{Binding SearchText}" />
+                    </Border>
+                    <Button Style="{StaticResource RoundedButton}" 
+                            Width="80" 
+                            Height="35" 
+                            Margin="5"
+                            Content="Search" 
+                            Command="{Binding SearchCommand}"/>
+                    <Button Style="{StaticResource RoundedButton}" 
+                            Width="80" 
+                            Height="35" 
+                            Margin="5"
+                            Content="Add" 
+                            Command="{Binding AddCommand}"/>
+                    <Button Style="{StaticResource RoundedButton}" 
+                            Width="80" 
+                            Height="35" 
+                            Margin="5"
+                            Content="Edit" 
+                            Command="{Binding EditCommand}"/>
+                    <Button Style="{StaticResource RoundedButton}" 
+                            Width="80" 
+                            Height="35" 
+                            Margin="5"
+                            Content="Delete"
+                            Command="{Binding DeleteCommand}"/>
+                    <Button Style="{StaticResource RoundedButton}"
+                            Width="80" 
+                            Height="35"
+                            Margin="5"
+                            Content="Undo" 
+                            Command="{Binding UndoCommand}"/>
+                    <Button Style="{StaticResource RoundedButton}" 
+                            Width="80" 
+                            Height="35" 
+                            Margin="5"
+                            Content="Redo" 
+                            Command="{Binding RedoCommand}"/>
+                </StackPanel>
+            </Border>
+            <Border
+                Background="{StaticResource CardBrush}"
+                CornerRadius="25"
+                Padding="15"
+                ClipToBounds="True"
+                BorderBrush="{StaticResource BorderBrushCustom}"
+                BorderThickness="1">
+                <DataGrid
+                    Background="Transparent"
+                    BorderThickness="0"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    GridLinesVisibility="None"
+                    HeadersVisibility="Column"
+                    RowHeight="35"
+                    FontSize="14"
+                    ItemsSource="{Binding Activities}"
+                    SelectedItem="{Binding SelectedActivity}">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#ECE7E1"/>
+                            <Setter Property="Foreground" Value="#4A4642"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="#FAF9F7"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Padding" Value="8"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding PassengerCount}" Header="Passengers"/>
+                        <DataGridTextColumn Binding="{Binding AverageWaitTime}" Header="Wait Time"/>
+                        <DataGridTextColumn Binding="{Binding NumberOfDelays}" Header="Delays"/>
+                        <DataGridTextColumn Binding="{Binding CollectionTime}" Header="Collection Time"/>
+                        <DataGridTextColumn Binding="{Binding State}" Header="State"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+            <Border
+                Margin="0 15 0 0"
+                Padding="15"
+                Background="{StaticResource CardBrush}"
+                CornerRadius="25"
+                BorderBrush="{StaticResource BorderBrushCustom}"
+                BorderThickness="1">
+                <lvc:CartesianChart
+                    Series="{Binding Series}"
+                    XAxes="{Binding XAxes}" />
+            </Border>
+        </DockPanel>
+    </Grid>
 </Window>

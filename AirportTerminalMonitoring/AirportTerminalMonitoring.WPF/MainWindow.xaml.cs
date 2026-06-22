@@ -43,7 +43,7 @@ namespace AirportTerminalMonitoring.WPF
 
         private void Terminals_Click(object sender, RoutedEventArgs e)
         {
-            TerminalViewModel vm = new TerminalViewModel(_terminalRepository, _logger, _storage);
+            TerminalViewModel vm = new TerminalViewModel(_terminalRepository, _logger, _storage, _activityRepository);
             TerminalWindow window = new TerminalWindow(vm);
             window.ShowDialog();
         }

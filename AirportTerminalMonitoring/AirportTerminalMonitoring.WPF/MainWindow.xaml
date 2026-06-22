@@ -6,21 +6,83 @@
     xmlns:local="clr-namespace:AirportTerminalMonitoring.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
+    WindowStartupLocation="CenterScreen"
     Width="400"
-    Height="250"
+    Height="280"
     mc:Ignorable="d">
-    <StackPanel>
-        <Button
-            Width="200"
-            Height="50"
-            Margin="10"
-            Click="Terminals_Click"
-            Content="Airport Terminals" />
-        <Button
-            Width="200"
-            Height="50"
-            Margin="10"
-            Click="Activities_Click"
-            Content="Terminal Activities" />
-    </StackPanel>
+    <Window.Resources>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="#8B8175"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="20">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="Opacity"
+                                        Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border"
+                                        Property="Opacity"
+                                        Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <Grid Background="#F7F5F2">
+        <Border
+             Width="300"
+             Padding="25"
+             Background="#FAF9F7"
+             CornerRadius="25"
+             BorderBrush="#DDD7CF"
+             BorderThickness="1">
+            <StackPanel>
+                <TextBlock
+                    Text="Airport Monitoring"
+                    FontSize="26"
+                    FontWeight="Bold"
+                    Foreground="#4A4642"
+                    HorizontalAlignment="Center"
+                    Margin="0 0 0 25"/>
+                <Button
+                    Style="{StaticResource RoundedButton}"
+                    Background="#D4C8BE"
+                    Foreground="#3E3A36"
+                    Margin="5"
+                    Height="45"
+                    Width="225"
+                    Click="Terminals_Click"
+                    Content="Airport Terminals"/>
+                <Button
+                    Style="{StaticResource RoundedButton}"
+                    Background="#D4C8BE"
+                    Foreground="#3E3A36"
+                    Margin="5"
+                    Height="45"
+                    Width="225"
+                    Click="Activities_Click"
+                    Content="Terminal Activities"/>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>

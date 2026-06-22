@@ -5,31 +5,164 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AirportTerminalMonitoring.WPF.Views"
         mc:Ignorable="d"
-       Title="ActivityFormWindow" Height="400" Width="450">
-    <Grid Margin="20">
-        <StackPanel>
-            <TextBlock Text="Collection Time"/>
-            <DatePicker SelectedDate="{Binding CollectionTime}"/>
+        Title="ActivityFormWindow" Height="700" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="#F7F4EF"/>
+        <SolidColorBrush x:Key="CardBrush" Color="White"/>
+        <SolidColorBrush x:Key="BorderBrushCustom" Color="#E5E1DA"/>
+        <SolidColorBrush x:Key="ButtonBrush" Color="#A89F91"/>
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#8F8678"/>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="{StaticResource ButtonBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="18">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter
+                                    TargetName="border"
+                                    Property="Background"
+                                    Value="{StaticResource ButtonHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-            <TextBlock Text="Passenger Count"/>
-            <TextBox Text="{Binding PassengerCount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-
-            <TextBlock Text="Average Wait Time"/>
-            <TextBox Text="{Binding AverageWaitTime, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-
-            <TextBlock Text="Number of Delays"/>
-            <TextBox Text="{Binding NumberOfDelays, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-
-            <TextBlock Text="Terminal"/>
-            <ComboBox ItemsSource="{Binding Terminals, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedItem="{Binding SelectedTerminal}" DisplayMemberPath="Code"/>
-
-            <TextBlock Text="State"/>
-            <ComboBox ItemsSource="{Binding States}" SelectedItem="{Binding State}"/>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="80" Margin="5" Content="Save" Command="{Binding SaveCommand}"/>
-                <Button Width="80" Margin="5" Content="Cancel" Command="{Binding CancelCommand}"/>
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Border
+            Width="350"
+            Padding="25"
+            Background="{StaticResource CardBrush}"
+            CornerRadius="25"
+            BorderBrush="{StaticResource BorderBrushCustom}"
+            BorderThickness="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock
+                    Text="Activity"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Foreground="#4B4B4B"
+                    HorizontalAlignment="Center"
+                    Margin="0 0 0 20"/>
+                <TextBlock Text="Collection Time"/>
+                <Border Margin="0 5 0 12"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                    <DatePicker
+                        Padding="8"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        SelectedDate="{Binding CollectionTime}" />
+                </Border>
+                <TextBlock Text="Passenger Count"/>
+                <Border Margin="0 5 0 12"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                    <TextBox
+                        Padding="10"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Text="{Binding PassengerCount,
+                                      UpdateSourceTrigger=PropertyChanged,
+                                      ValidatesOnDataErrors=True}" />
+                </Border>
+                <TextBlock Text="Average Wait Time"/>
+                <Border Margin="0 5 0 12"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                    <TextBox
+                        Padding="10"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Text="{Binding AverageWaitTime,
+                                      UpdateSourceTrigger=PropertyChanged,
+                                      ValidatesOnDataErrors=True}" />
+                </Border>
+                <TextBlock Text="Number of Delays"/>
+                <Border Margin="0 5 0 12"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                    <TextBox
+                        Padding="10"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Text="{Binding NumberOfDelays,
+                                      UpdateSourceTrigger=PropertyChanged,
+                                      ValidatesOnDataErrors=True}" />
+                </Border>
+                <TextBlock Text="Terminal"/>
+                <Border Margin="0 5 0 12"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                    <ComboBox
+                        Padding="8"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ItemsSource="{Binding Terminals}"
+                        SelectedItem="{Binding SelectedTerminal}"
+                        DisplayMemberPath="Code"/>
+                </Border>
+                <TextBlock Text="State"/>
+                <Border Margin="0 5 0 20"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                    <ComboBox
+                        Padding="8"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ItemsSource="{Binding States}"
+                        SelectedItem="{Binding State}"/>
+                </Border>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button
+                        Style="{StaticResource RoundedButton}"
+                        Width="90"
+                        Height="40"
+                        Margin="5"
+                        Content="Save"
+                        Command="{Binding SaveCommand}"/>
+                    <Button
+                        Style="{StaticResource RoundedButton}"
+                        Width="90"
+                        Height="40"
+                        Margin="5"
+                        Background="#C7BFB2"
+                        Content="Cancel"
+                        Command="{Binding CancelCommand}"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </Border>
     </Grid>
 </Window>

@@ -38,10 +38,15 @@ namespace AirportTerminalMonitoring.WPF.Commands
         private void ApplyState(T state)
         {
             _repository.Update(state);
-            int index = _collection.IndexOf(_currentReference);
-            if (index >= 0)
+
+            var props = typeof(T).GetProperties();
+
+            foreach (var prop in props)
             {
-                _collection[index] = state;
+                if (prop.CanRead && prop.CanWrite)
+                {
+                    prop.SetValue(_currentReference, prop.GetValue(state));
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AirportTerminalMonitoring.WPF.ViewModels
@@ -138,6 +139,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
                         if (SelectedTerminal == null)
                             return "You must choose a terminal";
                         break;
+
                 }
                 return null;
             }
@@ -170,11 +172,16 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
 
         private void Save()
         {
-            if (SelectedTerminal == null)
-                return;
+            if (!IsValid(out string errors))
+            {
+                MessageBox.Show(
+                    errors,
+                    "Validation error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
 
-            if (!IsValid())
                 return;
+            }
 
             TerminalActivity activity = new TerminalActivity
             {
@@ -194,9 +201,31 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             CancelRequested?.Invoke();
         }
 
-        private bool IsValid()
+        private bool IsValid(out string errors)
         {
-            return this[nameof(PassengerCount)] == null && this[nameof(AverageWaitTime)] == null && this[nameof(NumberOfDelays)] == null && this[nameof(SelectedTerminal)] == null;
+            List<string> validationErrors = new List<string>();
+
+            foreach (string property in new[]
+            {
+                nameof(PassengerCount),
+                nameof(AverageWaitTime),
+                nameof(NumberOfDelays),
+                nameof(SelectedTerminal)
+            })
+            {
+                string error = this[property];
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    validationErrors.Add(error);
+                }
+            }
+
+            errors = string.Join(Environment.NewLine, validationErrors);
+
+            return validationErrors.Count == 0;
         }
+
+       
     }
 }

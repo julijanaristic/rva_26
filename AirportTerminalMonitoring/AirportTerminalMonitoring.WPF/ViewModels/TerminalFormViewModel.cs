@@ -1,7 +1,9 @@
 ﻿using AirportTerminalMonitoring.Domain.Models;
 using AirportTerminalMonitoring.WPF.Commands;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AirportTerminalMonitoring.WPF.ViewModels
@@ -113,8 +115,16 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
 
         private void Save()
         {
-            if (!IsValid())
+            if (!IsValid(out string errors))
+            {
+                MessageBox.Show(
+                    errors,
+                    "Validation error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+
                 return;
+            }
 
             AirportTerminal terminal = new AirportTerminal
             {
@@ -132,9 +142,28 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
             CancelRequested?.Invoke();
         }
 
-        private bool IsValid()
+        private bool IsValid(out string errors)
         {
-            return this[nameof(Code)] == null && this[nameof(AirportName)] == null && this[nameof(GateCount)] == null;
+            List<string> validationErrors = new List<string>();
+
+            foreach (string property in new[]
+            {
+                nameof(Code),
+                nameof(AirportName),
+                nameof(GateCount),
+            })
+            {
+                string error = this[property];
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    validationErrors.Add(error);
+                }
+            }
+
+            errors = string.Join(Environment.NewLine, validationErrors);
+
+            return validationErrors.Count == 0;
         }
     }
 }

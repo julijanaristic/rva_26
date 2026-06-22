@@ -18,6 +18,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
         private readonly IRepository<AirportTerminal> _repository;
         private readonly ILoggerService _logger;
         private readonly IDataStorageService _storage;
+        private readonly IRepository<TerminalActivity> _activityRepository;
 
         private ObservableCollection<AirportTerminal> _terminals;
 
@@ -66,19 +67,20 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
 
-        public TerminalViewModel(IRepository<AirportTerminal> repository, ILoggerService logger, IDataStorageService storage)
+        public TerminalViewModel(IRepository<AirportTerminal> repository, ILoggerService logger, IDataStorageService storage, IRepository<TerminalActivity> activityRepository)
         {
             _repository = repository;
             _logger = logger;
             _storage = storage;
+            _activityRepository = activityRepository;
             Terminals = new ObservableCollection<AirportTerminal>(_repository.GetAll());
             TerminalService.Terminals = Terminals.ToList();
             AddCommand = new RelayCommand(_ => AddTerminal());
             DeleteCommand = new RelayCommand(_ => DeleteTerminal());
             EditCommand = new RelayCommand(_ => EditTerminal());
             SearchCommand = new RelayCommand(_ => SearchTerminals());
-            UndoCommand = new RelayCommand(_ => Redo(), _ => _undoStack.Count > 0);
-            RedoCommand = new RelayCommand(_ => Undo(), _ => _redoStack.Count > 0);
+            UndoCommand = new RelayCommand(_ => Undo(), _ => _undoStack.Count > 0);
+            RedoCommand = new RelayCommand(_ => Redo(), _ => _redoStack.Count > 0);
         }
 
         private void AddTerminal()
@@ -104,6 +106,13 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
         {
             if (SelectedTerminal == null)
                 return;
+
+            var activities = _activityRepository.GetAll().Where(a => a.TerminalId == SelectedTerminal.Id).ToList();
+
+            foreach (var a in activities)
+            {
+                _activityRepository.Delete(a.Id);
+            }
 
             var cmd = new GenericDeleteCommand<AirportTerminal>(Terminals, _repository, SelectedTerminal);
             _logger.Log($"Deleted terminal {SelectedTerminal.Code}");
