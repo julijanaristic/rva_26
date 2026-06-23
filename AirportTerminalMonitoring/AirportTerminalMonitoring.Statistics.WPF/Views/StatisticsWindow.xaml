@@ -149,20 +149,13 @@
                         FontWeight="SemiBold"
                         Foreground="#4B4B4B"
                         Text="Method:"/>
-                    <Border
-                        Margin="5"
-                        CornerRadius="15"
-                        BorderBrush="{StaticResource BorderBrushCustom}"
-                        BorderThickness="1"
-                        Background="White">
-                        <ComboBox
+                    <ComboBox
                             Width="220"
                             Padding="8"
                             Background="Transparent"
                             BorderThickness="0"
                             ItemsSource="{Binding Methods}"
                             SelectedItem="{Binding SelectedMethod}"/>
-                    </Border>
                     <Button
                         Width="100"
                         Height="35"
