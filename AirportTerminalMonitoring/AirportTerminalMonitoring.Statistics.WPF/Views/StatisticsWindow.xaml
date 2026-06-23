@@ -4,85 +4,207 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Statistics - Airport Terminal Monitoring"
     Width="900"
-    Height="600">
-    <DockPanel Margin="10">
-
-        <!--  Toolbar sa datumima  -->
-        <StackPanel
-            Margin="0,0,0,10"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal">
+    Height="800">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="#F7F4EF"/>
+        <SolidColorBrush x:Key="CardBrush" Color="White"/>
+        <SolidColorBrush x:Key="BorderBrushCustom" Color="#E5E1DA"/>
+        <SolidColorBrush x:Key="ButtonBrush" Color="#A89F91"/>
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#8F8678"/>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="{StaticResource ButtonBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="18">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter
+                                    TargetName="border"
+                                    Property="Background"
+                                    Value="{StaticResource ButtonHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <DockPanel Margin="20">
+            <!-- Toolbar -->
+            <Border
+                DockPanel.Dock="Top"
+                Padding="15"
+                Margin="0 0 0 15"
+                Background="{StaticResource CardBrush}"
+                CornerRadius="25"
+                BorderBrush="{StaticResource BorderBrushCustom}"
+                BorderThickness="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Foreground="#4B4B4B"
+                        Text="From:"/>
+                    <Border
+                        Margin="5"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                        <DatePicker
+                            Width="120"
+                            Padding="8"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            SelectedDate="{Binding FromDate}"/>
+                    </Border>
+                    <TextBlock
+                        Margin="15,5,5,5"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Foreground="#4B4B4B"
+                        Text="To:"/>
+                    <Border
+                        Margin="5"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                        <DatePicker
+                            Width="120"
+                            Padding="8"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            SelectedDate="{Binding ToDate}"/>
+                    </Border>
+                    <Button
+                        Width="110"
+                        Height="35"
+                        Margin="15,5,5,5"
+                        Style="{StaticResource RoundedButton}"
+                        Content="Load Data"
+                        Command="{Binding LoadDataCommand}"/>
+                </StackPanel>
+            </Border>
+            <!-- Status -->
             <TextBlock
-                Margin="5"
-                VerticalAlignment="Center"
-                Text="From:" />
-            <DatePicker
-                Width="120"
-                Margin="5"
-                SelectedDate="{Binding FromDate}" />
-            <TextBlock
-                Margin="5"
-                VerticalAlignment="Center"
-                Text="To:" />
-            <DatePicker
-                Width="120"
-                Margin="5"
-                SelectedDate="{Binding ToDate}" />
-            <Button
-                Margin="5"
-                Command="{Binding LoadDataCommand}"
-                Content="Load Data" />
-        </StackPanel>
-
-        <!--  Status poruka  -->
-        <TextBlock
-            Margin="5,0,0,5"
-            DockPanel.Dock="Top"
-            Foreground="Gray"
-            Text="{Binding StatusMessage}" />
-
-        <!--  Prikaz primljenih podataka  -->
-        <GroupBox
-            Height="200"
-            Margin="0,0,0,10"
-            DockPanel.Dock="Top"
-            Header="Received Data">
-            <ListBox FontFamily="Consolas" ItemsSource="{Binding DisplayLines}" />
-        </GroupBox>
-
-        <!--  Statisticke opcije  -->
-        <StackPanel
-            Margin="0,0,0,10"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal">
-            <TextBlock
-                Margin="5"
-                VerticalAlignment="Center"
-                Text="Method:" />
-            <ComboBox
-                Width="200"
-                Margin="5"
-                ItemsSource="{Binding Methods}"
-                SelectedItem="{Binding SelectedMethod}" />
-            <Button
-                Margin="5"
-                Command="{Binding ComputeCommand}"
-                Content="Compute" />
-            <Button
-                Margin="5"
-                Command="{Binding ExportCsvCommand}"
-                Content="Export CSV" />
-        </StackPanel>
-
-        <!--  Rezultati  -->
-        <GroupBox Header="Statistics Result">
-            <TextBox
-                FontFamily="Consolas"
-                IsReadOnly="True"
-                Text="{Binding StatisticsResult}"
-                TextWrapping="Wrap"
-                VerticalScrollBarVisibility="Auto" />
-        </GroupBox>
-
-    </DockPanel>
+                DockPanel.Dock="Top"
+                Margin="10,0,0,15"
+                Foreground="#7B756E"
+                FontStyle="Italic"
+                Text="{Binding StatusMessage}"/>
+            <!-- Received data -->
+            <Border
+                DockPanel.Dock="Top"
+                Height="220"
+                Margin="0 0 0 15"
+                Padding="15"
+                Background="{StaticResource CardBrush}"
+                CornerRadius="25"
+                BorderBrush="{StaticResource BorderBrushCustom}"
+                BorderThickness="1">
+                <DockPanel>
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        Margin="0 0 0 10"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="#4B4B4B"
+                        Text="Received Data"/>
+                    <ListBox
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontFamily="Consolas"
+                        ItemsSource="{Binding DisplayLines}"/>
+                </DockPanel>
+            </Border>
+            <!-- Statistics options -->
+            <Border
+                DockPanel.Dock="Top"
+                Padding="15"
+                Margin="0 0 0 15"
+                Background="{StaticResource CardBrush}"
+                CornerRadius="25"
+                BorderBrush="{StaticResource BorderBrushCustom}"
+                BorderThickness="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Foreground="#4B4B4B"
+                        Text="Method:"/>
+                    <Border
+                        Margin="5"
+                        CornerRadius="15"
+                        BorderBrush="{StaticResource BorderBrushCustom}"
+                        BorderThickness="1"
+                        Background="White">
+                        <ComboBox
+                            Width="220"
+                            Padding="8"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ItemsSource="{Binding Methods}"
+                            SelectedItem="{Binding SelectedMethod}"/>
+                    </Border>
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="15,5,5,5"
+                        Style="{StaticResource RoundedButton}"
+                        Content="Compute"
+                        Command="{Binding ComputeCommand}"/>
+                    <Button
+                        Width="120"
+                        Height="35"
+                        Margin="5"
+                        Style="{StaticResource RoundedButton}"
+                        Content="Export CSV"
+                        Command="{Binding ExportCsvCommand}"/>
+                </StackPanel>
+            </Border>
+            <!-- Results -->
+            <Border
+                Padding="20"
+                Background="{StaticResource CardBrush}"
+                CornerRadius="25"
+                BorderBrush="{StaticResource BorderBrushCustom}"
+                BorderThickness="1">
+                <DockPanel>
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        Margin="0 0 0 10"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="#4B4B4B"
+                        Text="Statistics Result"/>
+                    <TextBox
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontFamily="Consolas"
+                        FontSize="14"
+                        IsReadOnly="True"
+                        Text="{Binding StatisticsResult}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto"/>
+                </DockPanel>
+            </Border>
+        </DockPanel>
+    </Grid>
 </Window>

@@ -77,8 +77,7 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Text="{Binding Code,
-                                      UpdateSourceTrigger=PropertyChanged,
-                                      ValidatesOnDataErrors=True}" />
+                                      UpdateSourceTrigger=PropertyChanged}" />
                 </Border>
                 <TextBlock Text="Airport Name"/>
                 <Border
@@ -92,8 +91,7 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Text="{Binding AirportName,
-                                      UpdateSourceTrigger=PropertyChanged,
-                                      ValidatesOnDataErrors=True}" />
+                                      UpdateSourceTrigger=PropertyChanged}" />
                 </Border>
                 <TextBlock Text="Gate Count"/>
                 <Border
@@ -107,8 +105,7 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Text="{Binding GateCount,
-                                      UpdateSourceTrigger=PropertyChanged,
-                                      ValidatesOnDataErrors=True}" />
+                                      UpdateSourceTrigger=PropertyChanged}" />
                 </Border>
                 <TextBlock Text="Direct Exit"/>
                 <Border

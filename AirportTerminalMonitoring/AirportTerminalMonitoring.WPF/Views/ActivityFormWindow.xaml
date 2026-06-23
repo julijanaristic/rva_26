@@ -118,32 +118,20 @@
                                       ValidatesOnDataErrors=True}" />
                 </Border>
                 <TextBlock Text="Terminal"/>
-                <Border Margin="0 5 0 12"
-                        CornerRadius="15"
-                        BorderBrush="{StaticResource BorderBrushCustom}"
-                        BorderThickness="1"
-                        Background="White">
-                    <ComboBox
+                <ComboBox
                         Padding="8"
                         Background="Transparent"
                         BorderThickness="0"
                         ItemsSource="{Binding Terminals}"
                         SelectedItem="{Binding SelectedTerminal}"
                         DisplayMemberPath="Code"/>
-                </Border>
                 <TextBlock Text="State"/>
-                <Border Margin="0 5 0 20"
-                        CornerRadius="15"
-                        BorderBrush="{StaticResource BorderBrushCustom}"
-                        BorderThickness="1"
-                        Background="White">
-                    <ComboBox
+                <ComboBox
                         Padding="8"
                         Background="Transparent"
                         BorderThickness="0"
                         ItemsSource="{Binding States}"
                         SelectedItem="{Binding State}"/>
-                </Border>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right">
                     <Button
