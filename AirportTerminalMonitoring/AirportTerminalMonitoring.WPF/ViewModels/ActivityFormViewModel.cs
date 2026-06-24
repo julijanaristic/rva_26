@@ -151,7 +151,7 @@ namespace AirportTerminalMonitoring.WPF.ViewModels
         public ActivityFormViewModel(IEnumerable<AirportTerminal> terminals)
         {
             Terminals = new ObservableCollection<AirportTerminal>(terminals);
-
+            CollectionTime = DateTime.Today;
             SaveCommand = new RelayCommand(_ => Save());
             CancelCommand = new RelayCommand(_ => Cancel());
         }
