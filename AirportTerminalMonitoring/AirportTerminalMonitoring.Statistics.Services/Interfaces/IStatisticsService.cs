@@ -19,7 +19,7 @@ namespace AirportTerminalMonitoring.Statistics.Services.Interfaces
             Dictionary<string, List<TerminalActivity>> data);
 
         //koliko puta su terminali bili zatvoreni
-        Dictionary<string, int> GetClosedCount(
+        int GetClosedCount(
             Dictionary<string, List<TerminalActivity>> data);
 
     }

@@ -78,28 +78,12 @@ namespace AirportTerminalMonitoring.Statistics.Services.Services
             return result;
         }
 
-        public Dictionary<string, int> GetClosedCount(
+        public int GetClosedCount(
             Dictionary<string, List<TerminalActivity>> data)
         {
-            var result = new Dictionary<string, int>();
-
-            foreach (var entry in data)
-            {
-                foreach (var activity in entry.Value)
-                {
-                    if (activity.State != TerminalState.Closed)
-                        continue;
-
-                    string key = activity.TerminalId.ToString();
-
-                    if (!result.ContainsKey(key))
-                        result[key] = 0;
-
-                    result[key]++;
-                }
-            }
-
-            return result;
+            return data.Values
+                .SelectMany(x => x)
+                .Count(a => a.State == TerminalState.Closed);
         }
     }
 }

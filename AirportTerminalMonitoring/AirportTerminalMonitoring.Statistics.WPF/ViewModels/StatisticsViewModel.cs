@@ -181,9 +181,7 @@ namespace AirportTerminalMonitoring.Statistics.WPF.ViewModels
 
                 case StatisticsMethod.ClosedCount:
                     var stats3 = _statisticsService.GetClosedCount(_groupedData);
-                    sb.AppendLine("Times Closed per Terminal:");
-                    foreach (var s in stats3)
-                        sb.AppendLine($"Terminal {s.Key}: {s.Value} times closed");
+                    sb.AppendLine($"Total closed events: {stats3}");
                     break;
             }
 
