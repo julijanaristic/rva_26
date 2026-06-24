@@ -21,9 +21,9 @@ namespace AirportTerminalMonitoring.Statistics.WPF.ViewModels
     public class StatisticsViewModel : BaseViewModel
     {
         private readonly IWcfDataService _wcfService;
-        private readonly FallbackDataService _fallbackService;
+        private readonly IFallbackDataService _fallbackService;
         private readonly IStatisticsService _statisticsService;
-        private readonly CsvExportService _csvExport;
+        private readonly ICsvExportService _csvExport;
 
         private Dictionary<string, List<TerminalActivity>> _groupedData
            = new Dictionary<string, List<TerminalActivity>>();

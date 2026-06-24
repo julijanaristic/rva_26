@@ -1,5 +1,6 @@
 ﻿using AirportTerminalMonitoring.Domain.Enums;
 using AirportTerminalMonitoring.Domain.Models;
+using AirportTerminalMonitoring.Statistics.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace AirportTerminalMonitoring.Statistics.Services.Services
 {
-    public class FallbackDataService
+    public class FallbackDataService : IFallbackDataService
     {
         private static readonly string BASE_PATH = Path.Combine(
     AppDomain.CurrentDomain.BaseDirectory, // tvoj bin/Debug folder

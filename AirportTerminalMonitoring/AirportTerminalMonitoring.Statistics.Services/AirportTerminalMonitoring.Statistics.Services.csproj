@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="DTOs\MaxWaitTimeStats.cs" />
     <Compile Include="DTOs\PassengerDelayStats.cs" />
+    <Compile Include="Interfaces\ICsvExportService.cs" />
+    <Compile Include="Interfaces\IFallbackDataService.cs" />
     <Compile Include="Interfaces\IStatisticsService.cs" />
     <Compile Include="Interfaces\IWcfDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

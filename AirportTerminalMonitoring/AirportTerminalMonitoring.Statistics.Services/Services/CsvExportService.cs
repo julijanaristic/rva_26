@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirportTerminalMonitoring.Statistics.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AirportTerminalMonitoring.Statistics.Services.Services
 {
-    public class CsvExportService
+    public class CsvExportService : ICsvExportService
     {
         public void Export(string content, string filePath)
         {

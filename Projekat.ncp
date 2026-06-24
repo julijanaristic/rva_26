@@ -1,0 +1,568 @@
+<Project>
+  <Name>Projekat</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Avio</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>AirportTerminal</Name>
+        <Access>Public</Access>
+        <Location left="85" top="34" />
+        <Size width="162" height="162" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Guid Id</Member>
+        <Member type="Field">public string Code</Member>
+        <Member type="Field">public string AirportName</Member>
+        <Member type="Field">public int GateCount</Member>
+        <Member type="Field">public bool DirectExit</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TerminalActivity</Name>
+        <Access>Public</Access>
+        <Location left="295" top="34" />
+        <Size width="162" height="162" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Guid TerminalId</Member>
+        <Member type="Field">public int PassengerCount</Member>
+        <Member type="Field">public double AverageWaitTime</Member>
+        <Member type="Field">public Guid Id</Member>
+        <Member type="Field">public TerminalState State</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>TerminalState</Name>
+        <Access>Public</Access>
+        <Location left="518" top="34" />
+        <Size width="162" height="164" />
+        <Collapsed>False</Collapsed>
+        <Value>Operational</Value>
+        <Value>Congested</Value>
+        <Value>Delayed</Value>
+        <Value>Closed</Value>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IRepository&lt;T&gt;</Name>
+        <Access>Public</Access>
+        <Location left="85" top="253" />
+        <Size width="162" height="156" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">IEnumerable&lt;T&gt; GetAll()</Member>
+        <Member type="Method">T GetById(Guid id)</Member>
+        <Member type="Method">void Add(T entity)</Member>
+        <Member type="Method">void Update(T entity)</Member>
+        <Member type="Method">void Delete(Guid id)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>ILoggerService</Name>
+        <Access>Public</Access>
+        <Location left="715" top="253" />
+        <Size width="162" height="108" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Log(string message)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IDataStorageService</Name>
+        <Access>Public</Access>
+        <Location left="295" top="253" />
+        <Size width="355" height="141" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void SaveTerminals(IEnumerable&lt;AirportTerminal&gt; terminals)</Member>
+        <Member type="Method">List&lt;AirportTerminal&gt; LoadTerminals()</Member>
+        <Member type="Method">void SaveActivities(IEnumerable&lt;TerminalActivity&gt; activities)</Member>
+        <Member type="Method">List&lt;TerminalActivity&gt; LoadActivities()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>TerminalRepository</Name>
+        <Access>Public</Access>
+        <Location left="45" top="506" />
+        <Size width="162" height="96" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TerminalActivityRepository</Name>
+        <Access>Public</Access>
+        <Location left="221" top="506" />
+        <Size width="199" height="96" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>FileLogger</Name>
+        <Access>Public</Access>
+        <Location left="715" top="506" />
+        <Size width="162" height="114" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly string path</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>XmlStorageService</Name>
+        <Access>Public</Access>
+        <Location left="475" top="491" />
+        <Size width="162" height="135" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private const string TERMINALS_FILE = "terminal.xml"</Member>
+        <Member type="Field">private const string ACTIVITIES_FILE = "activities.xml"</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TerminalStateSimulationService</Name>
+        <Access>Public</Access>
+        <Location left="942" top="506" />
+        <Size width="267" height="115" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public TerminalState GetNextState(TerminalState current)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IUndoRedoCommand</Name>
+        <Access>Public</Access>
+        <Location left="1522" top="233" />
+        <Size width="162" height="113" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Execute()</Member>
+        <Member type="Method">void Undo()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>GenericAddCommand&lt;T&gt;</Name>
+        <Access>Public</Access>
+        <Location left="1274" top="470" />
+        <Size width="210" height="151" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly ObservableCollection&lt;T&gt; collection</Member>
+        <Member type="Field">private readonly IRepository&lt;T&gt; repository</Member>
+        <Member type="Field">private readonly T entity</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>GenericEditCommand&lt;T&gt;</Name>
+        <Access>Public</Access>
+        <Location left="1522" top="470" />
+        <Size width="210" height="162" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly ObservableCollection&lt;T&gt; collection</Member>
+        <Member type="Field">private readonly IRepository&lt;T&gt; repository</Member>
+        <Member type="Field">private readonly T oldState</Member>
+        <Member type="Field">private readonly T newState</Member>
+        <Member type="Field">private readonly T currentReference</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>GenericDeleteCommand&lt;T&gt;</Name>
+        <Access>Public</Access>
+        <Location left="1772" top="470" />
+        <Size width="210" height="151" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly ObservableCollection&lt;T&gt; collection</Member>
+        <Member type="Field">private readonly IRepository&lt;T&gt; repository</Member>
+        <Member type="Field">private readonly T entity</Member>
+        <Member type="Field">private int removedIndex</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>BaseViewModel</Name>
+        <Access>Public</Access>
+        <Location left="45" top="691" />
+        <Size width="162" height="124" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">protected void OnPropertyChanged()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TerminalViewModel</Name>
+        <Access>Public</Access>
+        <Location left="264" top="691" />
+        <Size width="300" height="349" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly IRepository&lt;AirportTerminal&gt; repository</Member>
+        <Member type="Field">private readonly ILoggerService logger</Member>
+        <Member type="Field">private readonly IDataStorageService storage</Member>
+        <Member type="Field">private readonly IRepository&lt;TerminalActivity&gt; activityRepository</Member>
+        <Member type="Field">private ObservableCollection&lt;AirportTerminal&gt; terminals</Member>
+        <Member type="Field">private AirportTerminal selectedTerminal</Member>
+        <Member type="Field">private string searchText</Member>
+        <Member type="Field">private readonly Stack&lt;IUndoRedoCommand&gt; undoStack</Member>
+        <Member type="Field">private readonly Stack&lt;IUndoRedoCommand&gt; redoStack</Member>
+        <Member type="Constructor">public TerminalViewModel()</Member>
+        <Member type="Method">private void AddTerminal()</Member>
+        <Member type="Method">private void DeleteTerminal()</Member>
+        <Member type="Method">private void EditTerminal()</Member>
+        <Member type="Method">private void SearchTerminal()</Member>
+        <Member type="Method">private void Undo()</Member>
+        <Member type="Method">private void Redo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ActivityViewModel</Name>
+        <Access>Public</Access>
+        <Location left="608" top="691" />
+        <Size width="300" height="383" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly IRepository&lt;TerminalActivity&gt; repository</Member>
+        <Member type="Field">private readonly ILoggerService logger</Member>
+        <Member type="Field">private readonly IDataStorageService storage</Member>
+        <Member type="Field">private readonly IRepository&lt;AirportTerminal&gt; terminalRepository</Member>
+        <Member type="Field">private readonly DispatcherTimer timer</Member>
+        <Member type="Field">private ObservableCollection&lt;TerminalActivities&gt; activities</Member>
+        <Member type="Field">private TerminalActivity selectedActivity</Member>
+        <Member type="Field">private string searchText</Member>
+        <Member type="Field">private readonly Stack&lt;IUndoRedoCommand&gt; undoStack</Member>
+        <Member type="Field">private readonly Stack&lt;IUndoRedoCommand&gt; redoStack</Member>
+        <Member type="Constructor">public ActivityViewModel()</Member>
+        <Member type="Method">private void AddActivity()</Member>
+        <Member type="Method">private void DeleteActivity()</Member>
+        <Member type="Method">private void EditActivity()</Member>
+        <Member type="Method">private void SearchActivity()</Member>
+        <Member type="Method">private void Undo()</Member>
+        <Member type="Method">private void Redo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TerminalFormViewModel</Name>
+        <Access>Public</Access>
+        <Location left="954" top="719" />
+        <Size width="183" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Guid id</Member>
+        <Member type="Field">private string code</Member>
+        <Member type="Field">private string airportName</Member>
+        <Member type="Field">private int gateCount</Member>
+        <Member type="Field">private bool directExit</Member>
+        <Member type="Method">private void Save()</Member>
+        <Member type="Method">private void Cancel()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ActivityFormViewModel</Name>
+        <Access>Public</Access>
+        <Location left="1179" top="719" />
+        <Size width="282" height="264" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Guid id</Member>
+        <Member type="Field">private Guid terminalId</Member>
+        <Member type="Field">private DateTime collectionTime</Member>
+        <Member type="Field">private int passengerCount</Member>
+        <Member type="Field">private double averageWaitTime</Member>
+        <Member type="Field">private int numberOfDelays</Member>
+        <Member type="Field">private TerminalState state</Member>
+        <Member type="Field">private AirportTerminal selectedTerminal</Member>
+        <Member type="Field">private ObservableCollection&lt;AirportTerminal&gt; terminals</Member>
+        <Member type="Method">private void Save()</Member>
+        <Member type="Method">private void Cancel()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Comment">
+        <Text>WCF - komunikacioni sloj</Text>
+        <Location left="621" top="1175" />
+        <Size width="260" height="72" />
+      </Entity>
+      <Entity type="Interface">
+        <Name>ITerminalService</Name>
+        <Access>Public</Access>
+        <Location left="264" top="1175" />
+        <Size width="275" height="106" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;TerminalActivity&gt; GetAllActivities()</Member>
+        <Member type="Method">List&lt;AirportTerminal&gt; GetAllTerminals()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>TerminalService</Name>
+        <Access>Public</Access>
+        <Location left="990" top="1162" />
+        <Size width="260" height="144" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public static List&lt;TerminalActivity&gt; Activities { get; set; }</Member>
+        <Member type="Property">public static List&lt;AirportTerminal&gt; Terminals { get; set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IWcfDataService</Name>
+        <Access>Public</Access>
+        <Location left="107" top="1391" />
+        <Size width="225" height="103" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;TerminalActivity&gt; GetActivities()</Member>
+        <Member type="Method">List&lt;AirportTerminal&gt; GetTerminals()</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IStatisticsService</Name>
+        <Access>Public</Access>
+        <Location left="437" top="1391" />
+        <Size width="402" height="129" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">Dictionary&lt;string, PassengerDelaysStats&gt; GetPassengerAndDelayStats()</Member>
+        <Member type="Method">Dictionary&lt;string, MaxWaitTimeStats&gt; GetMaxWaitTimeStats()</Member>
+        <Member type="Method">int GetClosedCount()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>FallbackDataService</Name>
+        <Access>Public</Access>
+        <Location left="901" top="1613" />
+        <Size width="274" height="99" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">private List&lt;TerminalActivity&gt; GetHardcodedActivities()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>WcfDataService</Name>
+        <Access>Public</Access>
+        <Location left="134" top="1589" />
+        <Size width="162" height="124" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private string address</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>StatisticsService</Name>
+        <Access>Public</Access>
+        <Location left="593" top="1613" />
+        <Size width="162" height="99" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CsvExportService</Name>
+        <Access>Public</Access>
+        <Location left="1226" top="1613" />
+        <Size width="264" height="99" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>StatisticViewModel</Name>
+        <Access>Public</Access>
+        <Location left="437" top="1836" />
+        <Size width="474" height="332" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly IWcfDataService _wcfService</Member>
+        <Member type="Field">private readonly IFallbackDataService _fallbackService</Member>
+        <Member type="Field">private readonly IStatisticsService _statisticsService</Member>
+        <Member type="Field">private readonly ICsvExportService _csvExport</Member>
+        <Member type="Field">private List&lt;AirportTerminal&gt; _terminals</Member>
+        <Member type="Field">private DateTime _fromDate</Member>
+        <Member type="Field">private DateTime _toDate</Member>
+        <Member type="Field">private ObservableCollection&lt;string&gt; _displayLines</Member>
+        <Member type="Field">private StatisticsMethod _selectedMethod</Member>
+        <Member type="Field">private string _statisticsResult</Member>
+        <Member type="Field">private string _statusMessage</Member>
+        <Member type="Method">private void LoadData()</Member>
+        <Member type="Method">private void UpdateDisplayLines()</Member>
+        <Member type="Method">private void Compute()</Member>
+        <Member type="Method">private void ExportCsv()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>BaseViewModel</Name>
+        <Access>Public</Access>
+        <Location left="134" top="1803" />
+        <Size width="162" height="124" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">protected void OnPropertyChanged()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>ICsvExportService</Name>
+        <Access>Public</Access>
+        <Location left="1226" top="1405" />
+        <Size width="256" height="106" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Export(string content, string filePath)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IFallbackDataService</Name>
+        <Access>Public</Access>
+        <Location left="901" top="1405" />
+        <Size width="262" height="115" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;TerminalActivity&gt; GetDefaultActivities()</Member>
+        <Member type="Method">List&lt;AirportTerminal&gt; GetDefaultTerminals()</Member>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Dependency" first="1" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="5" second="0">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>376</X>
+          <Y>228</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="5" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="6" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>129</X>
+          <Y>436</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="7" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>129</X>
+          <Y>434</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="8" second="4">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="9" second="5">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="10" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>705</X>
+          <Y>64</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="12" second="11">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="13" second="11">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="14" second="11">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="12" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1355</X>
+          <Y>444</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="13" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="14" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Generalization" first="16" second="15">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="17" second="15">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>240</X>
+          <Y>667</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Generalization" first="18" second="15">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>232</X>
+          <Y>650</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Generalization" first="19" second="15">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>232</X>
+          <Y>638</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="22" second="21">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>564</X>
+          <Y>1266</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="26" second="23">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="27" second="24">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="29" second="30">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="29" second="27">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="29" second="26">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="28" second="31">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="25" second="32">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="29" second="25">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="29" second="28">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
