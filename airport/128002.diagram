@@ -1,0 +1,168 @@
+format 224
+
+classinstancecanvas 128258 classinstance_ref 128130 // 
+  xyz 29.2 3.8 2005 life_line_z 2000
+end
+classinstancecanvas 128386 classinstance_ref 128258 // 
+  xyz 116.4 3.8 2010 life_line_z 2000
+end
+classinstancecanvas 128514 classinstance_ref 128386 // 
+  xyz 248.4 5.2 2015 life_line_z 2000
+end
+classinstancecanvas 128642 classinstance_ref 128514 // 
+  xyz 411.2 3.8 2020 life_line_z 2000
+end
+classinstancecanvas 128770 classinstance_ref 128642 // 
+  xyz 569.6 3.8 2005 life_line_z 2000
+end
+classinstancecanvas 128898 classinstance_ref 128770 // 
+  xyz 702 3.8 2010 life_line_z 2000
+end
+fragment 133890 "command"
+  xyzwh 38 49 2020 764 305
+end
+fragment 134018 "state"
+  xyzwh 38 365 2020 799 366
+end
+durationcanvas 129026 classinstance_ref 128258 // :user
+  xyzwh 48 97 2010 11 138
+end
+durationcanvas 129154 classinstance_ref 128386 // :activityWindow
+  xyzwh 162 93 2010 11 76
+end
+durationcanvas 129410 classinstance_ref 128514 // :activityViewModel
+  xyzwh 301 104.8 2010 11 96
+  overlappingdurationcanvas 130434
+    xyzwh 307 143.8 2020 11 26
+  end
+end
+durationcanvas 129666 classinstance_ref 128642 // :formViewModel
+  xyzwh 458 121.8 2010 11 110
+  overlappingdurationcanvas 130690
+    xyzwh 464 198 2020 11 25
+  end
+end
+durationcanvas 130946 classinstance_ref 128770 // :IRepository
+  xyzwh 604 207 2010 11 28
+end
+durationcanvas 131202 classinstance_ref 128642 // :formViewModel
+  xyzwh 459 229.4 2010 11 55
+end
+durationcanvas 131330 classinstance_ref 128770 // :IRepository
+  xyzwh 605 238.4 2010 11 46
+  overlappingdurationcanvas 131714
+    xyzwh 611 238.4 2020 11 26
+  end
+end
+durationcanvas 131586 classinstance_ref 128514 // :activityViewModel
+  xyzwh 301 237.2 2010 11 41
+end
+durationcanvas 131970 classinstance_ref 128514 // :activityViewModel
+  xyzwh 301 311.8 2010 11 41
+end
+durationcanvas 132098 classinstance_ref 128770 // :IRepository
+  xyzwh 604 311 2010 11 27
+end
+durationcanvas 132354 classinstance_ref 128258 // :user
+  xyzwh 48 380 2010 11 41
+end
+durationcanvas 132482 classinstance_ref 128514 // :activityViewModel
+  xyzwh 301 380.2 2010 11 26
+end
+durationcanvas 132738 classinstance_ref 128514 // :activityViewModel
+  xyzwh 301 416.8 2010 11 41
+end
+durationcanvas 132866 classinstance_ref 128898 // :simulationService
+  xyzwh 756 416 2010 11 27
+end
+durationcanvas 133122 classinstance_ref 128514 // :activityViewModel
+  xyzwh 301 459.8 2010 11 57
+end
+durationcanvas 133250 classinstance_ref 128898 // :simulationService
+  xyzwh 755 458.6 2010 11 42
+end
+durationcanvas 133506 classinstance_ref 128386 // :activityWindow
+  xyzwh 162 540 2010 11 41
+end
+durationcanvas 133634 classinstance_ref 128514 // :activityViewModel
+  xyzwh 301 540.2 2010 11 26
+end
+msg 129282 synchronous
+  from durationcanvas_ref 129026
+  to durationcanvas_ref 129154
+  yz 99 2015 explicitmsg "1. click add"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 80 83
+msg 129538 synchronous
+  from durationcanvas_ref 129154
+  to durationcanvas_ref 129410
+  yz 107 2020 explicitmsg "2. addCommand"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 192 91
+msg 129794 synchronous
+  from durationcanvas_ref 129410
+  to durationcanvas_ref 129666
+  yz 123 2015 explicitmsg "3. new formViewModel"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 322 107
+msg 130562 synchronous
+  from durationcanvas_ref 129154
+  to durationcanvas_ref 130434
+  yz 145 2025 explicitmsg "4. showDialog()"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 196 129
+msg 130818 synchronous
+  from durationcanvas_ref 129026
+  to durationcanvas_ref 130690
+  yz 208 2025 explicitmsg "5. fill out the form, click save"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 186 192
+msg 131074 synchronous
+  from durationcanvas_ref 130690
+  to durationcanvas_ref 130946
+  yz 209 2030 explicitmsg "6. isValid()"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 509 193
+msg 131458 synchronous
+  from durationcanvas_ref 131202
+  to durationcanvas_ref 131330
+  yz 268 2015 explicitmsg "8. saveRequested(activity)"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 468 252
+msg 131842 synchronous
+  from durationcanvas_ref 131586
+  to durationcanvas_ref 131714
+  yz 239 3005 explicitmsg "add(activity)"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 426 223
+msg 132226 synchronous
+  from durationcanvas_ref 131970
+  to durationcanvas_ref 132098
+  yz 313 2015 explicitmsg "9. saveActivities()"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 410 297
+msg 132610 synchronous
+  from durationcanvas_ref 132354
+  to durationcanvas_ref 132482
+  yz 381 2015 explicitmsg "10. timer.tick"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 144 365
+msg 132994 asynchronous
+  from durationcanvas_ref 132738
+  to durationcanvas_ref 132866
+  yz 418 2015 explicitmsg "11. getNextState(current)"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 460 402
+msg 133378 synchronous
+  from durationcanvas_ref 133122
+  to durationcanvas_ref 133250
+  yz 463 2015 explicitmsg "new state"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 505 447
+msg 133762 synchronous
+  from durationcanvas_ref 133506
+  to durationcanvas_ref 133634
+  yz 541 2015 explicitmsg "onPropertyChanged(), UI rerenders"
+  show_full_operations_definition default show_class_of_operation default drawing_language default show_context_mode default
+  label_xy 144 525
+end

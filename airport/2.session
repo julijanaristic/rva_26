@@ -1,0 +1,8 @@
+window_sizes 1800 892 450 1344 706 128
+
+show_stereotypes
+selected sequencediagram_ref 128002 // sequence-diagram
+open
+  usecaseview_ref 128002 // use-case
+end
+end
